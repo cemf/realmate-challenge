@@ -1,0 +1,6 @@
+from enum import Enum
+
+class EventType(Enum):
+    NEW_CONVERSATION = "NEW_CONVERSATION"
+    NEW_MESSAGE = "NEW_MESSAGE"
+    CLOSE_CONVERSATION = "CLOSE_CONVERSATION"
