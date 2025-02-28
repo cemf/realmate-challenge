@@ -5,8 +5,7 @@ from .models import Conversation, Message
 from .serializers import ConversationSerializer, MessageSerializer
 
 class ConversationDetailView(APIView):
-    def get(self, request, id):
-        print("bateu")
+    def get(self, id):
         try:
             conversation = Conversation.objects.get(id=id)
             serializer = ConversationSerializer(conversation)
