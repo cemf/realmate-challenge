@@ -24,7 +24,6 @@ def webhook(request):
             elif data["type"] == EventType.NEW_MESSAGE.value:
                 return handle_new_message(data)
             elif data["type"] == EventType.CLOSE_CONVERSATION.value:
-                print("deveria apagar AAAAAA", data)
                 return handle_close_conversation(data)
             else:
                 return JsonResponse(
