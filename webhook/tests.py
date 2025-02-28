@@ -4,7 +4,7 @@ import json
 import unittest
 from django.urls import reverse
 from conversations.services import get_conversation_by_id
-from webhook.views import EVENTS
+from webhook.enums import EventType
 
 
 class WebhookTestCase(APITestCase):
@@ -114,7 +114,7 @@ class WebhookTestCase(APITestCase):
 
         conversation_id = "6a41b347-8d80-4ce9-84ba-7af66f369f6a"
         payload = {
-            "type": EVENTS["NEW_CONVERSATION"],
+            "type": EventType.NEW_CONVERSATION.value,
             "timestamp": "2025-02-21T10:20:45.349308",
             "data": {"id": conversation_id},
         }
@@ -131,11 +131,10 @@ class WebhookTestCase(APITestCase):
 
         # Payload do webhook
         payload = {
-            "type": EVENTS["CLOSE_CONVERSATION"],
+            "type": EventType.CLOSE_CONVERSATION.value,
             "timestamp": "2025-02-21T10:20:44.349308",
             "data": {
-                "id": "16b63b04-60de-4257-b1a1-20a5154abc6d",
-                "conversation_id": conversation_id,
+                "id": conversation_id,
             },
         }
 
@@ -144,9 +143,10 @@ class WebhookTestCase(APITestCase):
             data=json.dumps(payload),  # Converte o payload para JSON
             content_type="application/json",  # Define o tipo de conteúdo como JSON
         )
-        conversation = get_conversation_by_id(conversation_id)
+        
+        conversation_after = get_conversation_by_id(conversation_id)
         # Verifica se a conversa foi fechada
-        self.assertEqual(conversation.status, "CLOSED")
+        self.assertEqual(conversation_after.status, "CLOSED")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()["status"], "success")
 
